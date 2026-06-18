@@ -1,0 +1,329 @@
+/* ==========================================================================
+   1. GLOBAL RENDER VARIABLES & BASE ARCHITECTURE
+   ========================================================================== */
+:root {
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --primary-color: #2b6cb0;
+    --accent-green: #2f855a;
+    --accent-red: #e53e3e;
+    --border-color: #cbd5e0;
+    --text-main: #2d3748;
+}
+
+/* FIX: Two body tags merged into one clear structural layout rules context */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 90px 0 80px 0; /* Header-top buffer: 90px, Footer-bottom buffer: 80px */
+    box-sizing: border-box;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==========================================================================
+   2. DASHBOARD CARDS & FORM ELEMENTS CONTROLLERS
+   ========================================================================== */
+.section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #1a365d;
+    margin-top: 0;
+    margin-bottom: 18px;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+.grid-layout-3-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #4a5568;
+}
+
+.form-control input, .form-control select {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    outline: none;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease;
+}
+
+.form-control input:focus, .form-control select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+/* ==========================================================================
+   3. DYNAMIC INTERACTIVE GRID TABLE STYLING
+   ========================================================================== */
+.items-header-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f7fafc;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+/* OPTIMIZATION: Interactive row inputs styling to match clean premium view */
+#dynamicItemRowsContainer input, #dynamicItemRowsContainer select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+#dynamicItemRowsContainer input:focus, #dynamicItemRowsContainer select:focus {
+    border-color: var(--primary-color);
+    background-color: #fff;
+}
+
+/* Read-only field background adjustment */
+#dynamicItemRowsContainer input[readonly] {
+    background-color: #edf2f7;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+/* Center alignment helper utility classes for specific columns */
+.text-center-align { text-align: center; }
+.text-right-align { text-align: right; }
+
+/* ==========================================================================
+   4. SYSTEM UTILITY BUTTONS INTERFACE
+   ========================================================================== */
+.btn {
+    padding: 10px 18px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-add {
+    background-color: var(--accent-green);
+    color: white;
+}
+.btn-add:hover {
+    background-color: #22543d;
+}
+
+.btn-primary-compile {
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 14px;
+    box-shadow: 0 4px 10px rgba(43, 108, 176, 0.2);
+}
+.btn-primary-compile:hover {
+    background-color: #2b6cb0;
+}
+.btn-primary-compile:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+}
+
+/* OPTIMIZATION: Row Action Delete button design logic specification */
+.btn-row-delete {
+    background-color: transparent;
+    color: var(--accent-red);
+    font-size: 1.2rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+.btn-row-delete:hover {
+    background-color: #fff5f5;
+    border-color: #feb2b2;
+}
+
+/* ==========================================================================
+   5. FLOATING COMPONENT RIGGING (HEADER & FOOTER LAYERS)
+   ========================================================================== */
+/* Top FIXED Premium Dashboard Header Bar */
+.master-dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #1a365d 0%, #2a4365 100%);
+    color: #ffffff;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid #3182ce;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    box-sizing: border-box;
+}
+
+.header-left-brand h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.header-left-brand p {
+    margin: 2px 0 0 0;
+    font-size: 0.75rem;
+    color: #90cdf4;
+    font-weight: 500;
+}
+
+.header-right-clock #liveDashboardClockDisplay {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+}
+
+/* Fixed Footer Branding Section */
+.fixed-footer-branding {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 14px 0;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 9999;
+}
+
+.fixed-footer-branding p {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.fixed-footer-branding span {
+    color: #4a5568;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   6. VISIBILITY CONTROLLER AND TOGGLES
+   ========================================================================== */
+.hide-financial-node {
+    display: none !important;
+}
+
+/* ফর্ম গ্রুপের স্পেসিং */
+.form-group {
+    margin-bottom: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* লেবেলের ডিজাইন */
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ইনপুট ফিল্ডের মেইন ডিজাইন */
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* প্লেসহোল্ডার টেক্সটের কালার */
+.form-control::placeholder {
+    color: #aaa;
+    font-weight: 400;
+}
+
+/* ইনপুট ফিল্ডে ক্লিক করলে বা ফোকাস হলে যে ইফেক্ট হবে */
+.form-control:focus {
+    border-color: #4a90e2; /* আপনার থিম কালার অনুযায়ী পরিবর্তন করতে পারেন */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15); /* হালকা গ্লো ইফেক্ট */
+}
+
+/* ইনপুট ফিল্ড যদি ডিসেবলড থাকে তার জন্য (ঐচ্ছিক) */
+.form-control:disabled {
+    background-color: #f5f5f5;
+    color: #777777;
+    cursor: not-allowed;
+}
