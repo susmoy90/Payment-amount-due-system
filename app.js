@@ -53,10 +53,13 @@ function deleteCustomerFromRegistry(index) {
 
 function renderCustomerRegistryUI() {
     const displayList = document.getElementById("customerRegistryDisplayList");
-    const dataList = document.getElementById("customerList"); // আপনার ইনপুটের datalist
+    const dataList = document.getElementById("customerList"); 
     
     let html = "";
     let optionsHtml = "";
+    
+    // লোকাল স্টোরেজ থেকে ডাটা আবার রিফ্রেশ করে নিন
+    customerRegistryList = JSON.parse(localStorage.getItem("dashboard_master_customer_log_pool")) || [];
     
     customerRegistryList.forEach((name, index) => {
         html += `<li>${name} <button onclick="deleteCustomerFromRegistry(${index})" style="color:red; cursor:pointer;">(Delete)</button></li>`;
@@ -64,7 +67,11 @@ function renderCustomerRegistryUI() {
     });
     
     if(displayList) displayList.innerHTML = html || "No customers registered.";
-    if(dataList) dataList.innerHTML = optionsHtml;
+    
+    // এখানেই মূল কাজ: datalist-এর ভেতরে options পুশ করা
+    if(dataList) {
+        dataList.innerHTML = optionsHtml;
+    }
 }
 
 // পেজ লোড হওয়ার সময় লিস্ট রেন্ডার করা
