@@ -39,12 +39,20 @@
                         <label for="poNo">PO Reference Number:</label>
                         <input type="text" id="poNo" placeholder="e.g., GBDML/PO/2563/26">
                     </div>
+                    <div class="form-control">
+                        <label for="clientPhone">Phone Number:</label>
+                        <input type="tel" id="clientPhone" placeholder="01XXXXXXXXX" 
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                            maxlength="11">
+                    </div>
+
                 </div>
 
                 <div class="grid-layout-3-col">
                     <div class="form-control">
                         <label for="customerName">Customer Corporate Name:</label>
-                        <input type="text" id="customerName" placeholder="Enter Customer Name" required>
+                        <input type="text" id="customerName" placeholder="Enter Customer Name" list="customerList" required>
+                        <datalist id="customerList"></datalist>
                     </div>
                     <div class="form-control">
                         <label for="customerAddress">Delivery / Billing Address:</label>
@@ -67,6 +75,23 @@
 
                 </div>
             </div>
+
+            <div class="section-card customer-manager-section" style="margin-top: 30px; background-color: #f7fafc; border: 2px dashed #cbd5e0;">
+                <h2 style="border-left-color: #3182ce; color: #2c5282;">Master Customer Registry</h2>
+                <p style="font-size: 0.85rem; color: #4a5568; margin-bottom: 12px;">Add customer names here to sync automatically with the interactive search dropdown for your invoice generation:</p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="newCustomerInput" placeholder="Enter Customer Name (e.g., ABC Corporation)" style="flex: 1; padding: 10px; border: 1px solid #cbd5e0; border-radius: 4px;">
+                    <button type="button" class="btn" onclick="saveNewCustomerToRegistry()" style="background-color: #3182ce; color: white;">+ Register Customer</button>
+                </div>
+
+                <div style="max-height: 155px; overflow-y: scroll; background: white; padding: 10px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                    <ul id="customerRegistryDisplayList" style="margin: 0; padding-left: 20px; font-size: 0.9rem; line-height: 1.6;">
+                        <!-- কাস্টমার লিস্ট এখানে আসবে -->
+                    </ul>
+                </div>
+            </div>
+
 
             <div class="section-card inventory-manager-section" style="margin-top: 30px; background-color: #f7fafc; border: 2px dashed #cbd5e0;">
                 <h2 style="border-left-color: #e53e3e; color: #742a2a;">Master Product Inventory Registry</h2>

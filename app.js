@@ -21,6 +21,57 @@ function startLiveDashboardClock() {
 }
 
 
+// ==========================================================================
+// 1.1 MASTER CUSTOMER REGISTRY ENGINE
+// ==========================================================================
+let customerRegistryList = JSON.parse(localStorage.getItem("dashboard_master_customer_log_pool")) || [];
+
+function saveNewCustomerToRegistry() {
+    const customerInputNode = document.getElementById("newCustomerInput");
+    const customerName = customerInputNode ? customerInputNode.value.trim() : "";
+    
+    if (customerName) {
+        if (!customerRegistryList.includes(customerName)) {
+            customerRegistryList.push(customerName);
+            localStorage.setItem("dashboard_master_customer_log_pool", JSON.stringify(customerRegistryList));
+            customerInputNode.value = "";
+            renderCustomerRegistryUI();
+            alert(`Success! "${customerName}" saved to registry.`);
+        } else {
+            alert("Customer already exists!");
+        }
+    }
+}
+
+function deleteCustomerFromRegistry(index) {
+    if(confirm("Delete this customer?")) {
+        customerRegistryList.splice(index, 1);
+        localStorage.setItem("dashboard_master_customer_log_pool", JSON.stringify(customerRegistryList));
+        renderCustomerRegistryUI();
+    }
+}
+
+function renderCustomerRegistryUI() {
+    const displayList = document.getElementById("customerRegistryDisplayList");
+    const dataList = document.getElementById("customerList"); // আপনার ইনপুটের datalist
+    
+    let html = "";
+    let optionsHtml = "";
+    
+    customerRegistryList.forEach((name, index) => {
+        html += `<li>${name} <button onclick="deleteCustomerFromRegistry(${index})" style="color:red; cursor:pointer;">(Delete)</button></li>`;
+        optionsHtml += `<option value="${name}">`;
+    });
+    
+    if(displayList) displayList.innerHTML = html || "No customers registered.";
+    if(dataList) dataList.innerHTML = optionsHtml;
+}
+
+// পেজ লোড হওয়ার সময় লিস্ট রেন্ডার করা
+document.addEventListener("DOMContentLoaded", () => {
+    // আপনার আগের কোডের সাথে এটি যুক্ত করুন
+    renderCustomerRegistryUI();
+});
 
 // ==========================================================================
 
@@ -221,7 +272,7 @@ function injectNewItemDataRow() {
             <td class="financial-data-row-cell"><input type="number" class="input-item-rate" placeholder="0.00" step="0.01" oninput="calculateRowRealtimeAmount(${activeItemRowCountSequenceCount})"></td>
 
             <td class="financial-data-row-cell"><input type="number" class="output-item-amount" placeholder="0.00" readonly></td>
-
+            
         </tr>
 
     `;
@@ -433,6 +484,7 @@ document.getElementById("documentGenerationForm").addEventListener("submit", ($e
     const extractionTargetDocumentSelectionType = document.getElementById("documentTypeSelector").value;
     const invoiceNo = document.getElementById("invoiceNo").value;
     const poNo = document.getElementById("poNo").value || "N/A";
+    const clientPhone = document.getElementById('clientPhone').value;
     const customerName = document.getElementById("customerName").value;
     const customerAddress = document.getElementById("customerAddress").value;
     const docDate = document.getElementById("docDate").value;
@@ -732,15 +784,10 @@ if (currentRows < totalRows) {
                     </tr>
 
                     <tr>
-
                         <td class="no-wrap-label" style="font-weight: bold; vertical-align: top; padding: 3px 0;">PHONE</td>
-
-                        <td style="vertical-align: top; padding: 3px 0;">: 01XXXXXXXXX</td>
-
+                        <td style="vertical-align: top; padding: 3px 0;">: ${clientPhone}</td>
                         <td class="no-wrap-label" style="font-weight: bold; vertical-align: top; text-align: left; padding: 3px 0; padding-left: 15px;">DATE</td>
-
                         <td style="vertical-align: top; padding: 3px 0;">: ${docDate}</td>
-
                     </tr>
 
                     <tr>
