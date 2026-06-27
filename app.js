@@ -478,7 +478,7 @@ if (currentRows < totalRows) {
                         </tr>
                         <tr>
                             <td style="border-right: 1px solid #000000; padding: 5px; text-align: left; font-weight: bold;">BILL DUE:</td>
-                            <td style="padding: 5px; text-align: center; font-weight: bold; ">${netBillDue.toFixed(2)}</td>
+                            <td style="padding: 5px; text-align: right; font-weight: bold; ">${netBillDue.toFixed(2)}</td>
                         </tr>
                     </table>
                 </div>
@@ -570,7 +570,7 @@ if (currentRows < totalRows) {
             </div>
 
             <div id="print_area">
-                <div style="text-align: center; margin-top: 40px; margin-bottom:20px;">
+                <div style="text-align: center; margin-top: 80px; margin-bottom:20px;">
                     <h2 style="margin: 0; font-size: 20px; text-decoration: underline; letter-spacing: 1px; font-weight: 700; color: #000000; text-transform: uppercase;">${headerTitleText}</h2>
                 </div>
 
@@ -620,7 +620,7 @@ if (currentRows < totalRows) {
                     </tbody>
                 </table>
                 ${summarySectionHtml}
-                <div style="margin-top: 100px; display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000000; padding: 0 5px;">
+                <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #000000; padding: 0 5px;">
                     <div style="width: 30%; border-top: 1px solid #000000; padding-top: 6px; text-align: center;">CUSTOMER SIGNATURE</div>
                     <div style="width: 30%; border-top: 1px solid #000000; padding-top: 6px; text-align: center;">AUTHORIZED SIGNATURE</div>
                 </div>
